@@ -61,7 +61,7 @@ Decisions 1 and 2 are real ambiguities in the spec. One option is to email Mathe
 - [x] Step 2 — Readers
 - [x] Step 3 — Map-reduce aggregation
 - [x] Step 4 — Goal 2 output
-- [ ] Step 5 — Goal 3 output
+- [x] Step 5 — Goal 3 output
 - [ ] Step 6 — Goal 4 output
 - [ ] Step 7 — CLI
 - [ ] Step 8 — Tests
