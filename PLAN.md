@@ -34,6 +34,8 @@
 
 Also decided (Step 3): use map-reduce with a process pool (a naive pool that ships `Claim` objects back measured slower than sequential); Goal 4 includes reverted claims; Goal 3 excludes them; reverts dated before their claim still count.
 
+Also decided (Step 4): prices rounded to 2 decimals at the very end; a pair whose claims are all reverted keeps its row with `avg_price: null`.
+
 Decisions 1 and 2 are real ambiguities in the spec. One option is to email Matheus about them. Whatever is chosen gets documented in the README.
 
 ## Build steps
@@ -58,7 +60,7 @@ Decisions 1 and 2 are real ambiguities in the spec. One option is to email Mathe
 - [x] Step 1 — Models & validation
 - [x] Step 2 — Readers
 - [x] Step 3 — Map-reduce aggregation
-- [ ] Step 4 — Goal 2 output
+- [x] Step 4 — Goal 2 output
 - [ ] Step 5 — Goal 3 output
 - [ ] Step 6 — Goal 4 output
 - [ ] Step 7 — CLI
