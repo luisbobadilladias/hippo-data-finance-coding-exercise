@@ -26,8 +26,8 @@
 
 ## Open decisions (recommendation first)
 
-1. **Price metrics and reverted claims:** exclude reverted claims from `avg_price` and `total_price`, because a revert invalidates the claim. `fills` counts all valid claims and `reverted` counts how many of them were reverted.
-2. **Which "average unit price":** mean of each claim's `price / quantity` (recommended), or weighted `sum(price) / sum(quantity)`.
+1. **Price metrics and reverted claims:** exclude reverted claims from `avg_price` and `total_price`, because a revert invalidates the claim. `fills` counts all valid claims and `reverted` counts how many of them were reverted. **Decided: exclude.**
+2. **Which "average unit price":** mean of each claim's `price / quantity` (recommended), or weighted `sum(price) / sum(quantity)`. **Decided: mean of per-claim unit prices.**
 3. **Goal 4, how many quantities:** top 5 by frequency, most common first (matches the example).
 4. **Libraries:** Python standard library only (`json`, `csv`, `argparse`, `dataclasses`, `concurrent.futures`) plus `pytest` for tests.
 5. **Repo contents:** keep `data/` so the README can show how to run on the sample files. Possibly remove the gist folder later.
@@ -53,7 +53,7 @@ Decisions 1 and 2 are real ambiguities in the spec. One option is to email Mathe
 
 - [ ] Open decisions answered
 - [x] Step 0 — Skeleton
-- [ ] Step 1 — Models & validation
+- [x] Step 1 — Models & validation
 - [ ] Step 2 — Readers
 - [ ] Step 3 — Parallel reading
 - [ ] Step 4 — Goal 2 metrics
