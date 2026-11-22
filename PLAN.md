@@ -52,7 +52,7 @@ Decisions 1 and 2 are real ambiguities in the spec. One option is to email Mathe
 ## Progress
 
 - [ ] Open decisions answered
-- [ ] Step 0 — Skeleton
+- [x] Step 0 — Skeleton
 - [ ] Step 1 — Models & validation
 - [ ] Step 2 — Readers
 - [ ] Step 3 — Parallel reading
