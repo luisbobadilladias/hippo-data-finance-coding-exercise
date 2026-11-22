@@ -10,10 +10,7 @@ from collections import Counter
 from pathlib import Path
 from typing import Callable, Iterable, TypeVar
 
-from hippo.models import (
-    Claim, InvalidRecord, Pharmacy, Revert,
-    parse_claim, parse_pharmacy, parse_revert,
-)
+from hippo.models import InvalidRecord, Pharmacy, Revert, parse_pharmacy, parse_revert
 
 T = TypeVar("T")
 SUPPORTED_SUFFIXES = (".json", ".csv")
@@ -74,14 +71,6 @@ def _read_all(dirs, parse):
 def read_pharmacies(dirs) -> tuple[dict[str, Pharmacy], Counter]:
     pharmacies, rejects = _read_all(dirs, parse_pharmacy)
     return {p.npi: p for p in pharmacies}, rejects
-
-
-def read_claims(dirs, known_npis) -> tuple[list[Claim], Counter]:
-    claims, rejects = _read_all(dirs, parse_claim)
-    kept = [c for c in claims if c.npi in known_npis]
-    if dropped := len(claims) - len(kept):
-        rejects["npi: not in pharmacy dataset"] += dropped
-    return kept, rejects
 
 
 def read_reverts(dirs) -> tuple[list[Revert], Counter]:

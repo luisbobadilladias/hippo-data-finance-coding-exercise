@@ -32,6 +32,8 @@
 4. **Libraries:** Python standard library only (`json`, `csv`, `argparse`, `dataclasses`, `concurrent.futures`) plus `pytest` for tests.
 5. **Repo contents:** keep `data/` so the README can show how to run on the sample files. Possibly remove the gist folder later.
 
+Also decided (Step 3): use map-reduce with a process pool (a naive pool that ships `Claim` objects back measured slower than sequential); Goal 4 includes reverted claims; Goal 3 excludes them; reverts dated before their claim still count.
+
 Decisions 1 and 2 are real ambiguities in the spec. One option is to email Matheus about them. Whatever is chosen gets documented in the README.
 
 ## Build steps
@@ -41,10 +43,10 @@ Decisions 1 and 2 are real ambiguities in the spec. One option is to email Mathe
 | 0 | Project skeleton: `pyproject.toml`, venv, `src/` layout, pytest running | How a Python package is laid out and why |
 | 1 | `models.py`: `Pharmacy`, `Claim`, `Revert` dataclasses plus validation (returns a valid object or rejects it with a reason) | Schema validation; all 5 traps handled explicitly |
 | 2 | `readers.py`: read the 3 lists of directories (CSV and JSON), skip invalid events and log a count of what was rejected | File I/O and defensive parsing |
-| 3 | Parallel reading with `ProcessPoolExecutor` (the spec mentions 10 cores) | Why processes rather than threads (the GIL), and when parallelism is worth it |
-| 4 | Goal 2, `metrics.py`: group by (npi, ndc), dedupe reverts by id, compute fills/reverted/avg/total | Single-pass aggregation with dicts |
-| 5 | Goal 3, `recommendations.py`: join claims to chains, average unit price per (ndc, chain), keep the 2 cheapest | Joins and sorting without a framework |
-| 6 | Goal 4, `quantities.py`: count quantities per ndc, keep the top 5 | `collections.Counter` |
+| 3 | `aggregate.py`: map-reduce over claim files. Workers return small partial sums per (npi, ndc) and quantity counts per ndc; reverts deduped into a set of claim ids first | Why shipping objects between processes is the real cost, and why sums merge but averages don't |
+| 4 | Goal 2: format the merged (npi, ndc) totals into fills/reverted/avg/total | Turning sums into output |
+| 5 | Goal 3: roll (npi, ndc) totals up to (ndc, chain), keep the 2 cheapest | Joins and sorting without a framework |
+| 6 | Goal 4: top 5 quantities per ndc from the merged counters (reverted claims included) | `collections.Counter.most_common` |
 | 7 | `cli.py` / `__main__.py`: argparse for the 3 directory lists plus an output dir; writes 3 JSON files | The entry point the graders will run |
 | 8 | Tests for each step, with small hand-made inputs where the answer is known | Proving correctness |
 | 9 | README: how to run it, assumptions made, the data-quality findings | The document graders read first |
@@ -55,10 +57,10 @@ Decisions 1 and 2 are real ambiguities in the spec. One option is to email Mathe
 - [x] Step 0 — Skeleton
 - [x] Step 1 — Models & validation
 - [x] Step 2 — Readers
-- [ ] Step 3 — Parallel reading
-- [ ] Step 4 — Goal 2 metrics
-- [ ] Step 5 — Goal 3 recommendations
-- [ ] Step 6 — Goal 4 quantities
+- [x] Step 3 — Map-reduce aggregation
+- [ ] Step 4 — Goal 2 output
+- [ ] Step 5 — Goal 3 output
+- [ ] Step 6 — Goal 4 output
 - [ ] Step 7 — CLI
 - [ ] Step 8 — Tests
 - [ ] Step 9 — README
