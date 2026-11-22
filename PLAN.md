@@ -54,7 +54,7 @@ Decisions 1 and 2 are real ambiguities in the spec. One option is to email Mathe
 - [ ] Open decisions answered
 - [x] Step 0 — Skeleton
 - [x] Step 1 — Models & validation
-- [ ] Step 2 — Readers
+- [x] Step 2 — Readers
 - [ ] Step 3 — Parallel reading
 - [ ] Step 4 — Goal 2 metrics
 - [ ] Step 5 — Goal 3 recommendations
