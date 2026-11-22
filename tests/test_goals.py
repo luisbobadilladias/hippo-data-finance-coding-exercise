@@ -1,5 +1,7 @@
+from collections import Counter
+
 from hippo.aggregate import Partial, Totals
-from hippo.goals import cheapest_chains, pharmacy_drug_metrics
+from hippo.goals import cheapest_chains, common_quantities, pharmacy_drug_metrics
 from hippo.models import Pharmacy
 
 
@@ -70,3 +72,17 @@ def test_goal3_skips_fully_reverted_chain():
     s = summary(a_d1=Totals(fills=2, reverted=2), b_d1=Totals(fills=1, unit_price_sum=5.0))
     [row] = cheapest_chains(s, pharmacies(a="doctor", b="health"))
     assert [c["name"] for c in row["chain"]] == ["health"]
+
+
+def test_goal4_most_common_first_and_capped():
+    s = Partial(quantities={"d1": Counter({1.0: 5, 2.0: 9, 3.0: 7, 4.0: 1})})
+    assert common_quantities(s, top=3) == [
+        {"ndc": "d1", "most_prescribed_quantity": [2.0, 3.0, 1.0]}]
+
+
+def test_goal4_ties_go_to_smaller_quantity_regardless_of_insertion_order():
+    a = Counter({30.0: 252, 15.0: 252})  # 30 inserted first
+    b = Counter({15.0: 252, 30.0: 252})  # 15 inserted first
+    for counts in (a, b):
+        [row] = common_quantities(Partial(quantities={"d1": counts}), top=1)
+        assert row["most_prescribed_quantity"] == [15.0]

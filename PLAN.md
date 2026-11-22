@@ -36,6 +36,8 @@ Also decided (Step 3): use map-reduce with a process pool (a naive pool that shi
 
 Also decided (Step 4): prices rounded to 2 decimals at the very end; a pair whose claims are all reverted keeps its row with `avg_price: null`.
 
+Also decided (Steps 5–6): Goal 3 ranks chains on the exact (unrounded) average, ties by chain name. Goal 4 breaks count ties toward the smaller quantity, always 5 entries (the sample has a real tie at the cutoff for `00031074998`).
+
 Decisions 1 and 2 are real ambiguities in the spec. One option is to email Matheus about them. Whatever is chosen gets documented in the README.
 
 ## Build steps
@@ -62,7 +64,7 @@ Decisions 1 and 2 are real ambiguities in the spec. One option is to email Mathe
 - [x] Step 3 — Map-reduce aggregation
 - [x] Step 4 — Goal 2 output
 - [x] Step 5 — Goal 3 output
-- [ ] Step 6 — Goal 4 output
+- [x] Step 6 — Goal 4 output
 - [ ] Step 7 — CLI
 - [ ] Step 8 — Tests
 - [ ] Step 9 — README

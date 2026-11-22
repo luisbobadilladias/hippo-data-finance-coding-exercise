@@ -58,3 +58,19 @@ def cheapest_chains(summary: Partial, pharmacies: dict[str, Pharmacy],
                       for avg, chain in ranked[:top]],
         })
     return report
+
+
+def common_quantities(summary: Partial, top: int = 5) -> list[dict]:
+    """Goal 4: per drug, the `top` most prescribed quantities, most common first.
+
+    Ties in count go to the smaller quantity, so the result never depends
+    on the order in which files were read.
+    """
+    report = []
+    for ndc, counts in sorted(summary.quantities.items()):
+        ranked = sorted(counts.items(), key=lambda item: (-item[1], item[0]))
+        report.append({
+            "ndc": ndc,
+            "most_prescribed_quantity": [qty for qty, _ in ranked[:top]],
+        })
+    return report
